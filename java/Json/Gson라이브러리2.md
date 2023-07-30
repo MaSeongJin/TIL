@@ -99,8 +99,48 @@ Gson의 '@Expose' 어노테이션을 이용하여 특정 필드가 포함될지,
 - @Expose 어노테이션은, excludeFieldsWithoutExposeAnnotation 옵션이 적용된 Gson 객체로, Json을 생성하거나(toJson()), 객체를 생성할 때만(fromJson()) 유효하다.
 - excludeFieldsWithoutExposeAnnotation 옵션이 적용된 Gson 객체로, Json을 생성하거나(toJson()), 객체를 생성할 때(fromJson()) @Expose 어노테이션이 없으면, 해당 필드는 무시됩니다.
 
+**@Expose 가 적용된 Student 클래스**
+```java
+import com.google.gson.annotations.Expose;
+ 
+public class Student {
+    @Expose(serialize = false, deserialize = true)
+    private int id;
+ 
+    @Expose(serialize = true, deserialize = false)
+    private String name;
+ 
+    private String major;
+ 
+    public Student(int id, String name, String major) {
+        this.id = id;
+        this.name = name;
+        this.major = major;
+    }
+ 
+    @Override
+    public String toString() {
+        return "Student [id=" + id + ", major=" + major + ", name=" + name + "]";
+    }
+}
+```
+@Expose(serialize = false, deserialize = true)
+private int id;
+'id' field는
+객체 -> Json 변환시에는 제외되고,
+Json -> 객체 변환시에는 포함됩니다.
 
+@Expose(serialize = true, deserialize = false)
+private String name;
+'name' field는
+객체 -> Json 변환시에는 포함되고,
+Json -> 객체 변환시에는 제외됩니다.
 
+private String major;
+@Expose 어노테이션이 명시되지 않은
+'major' 필드는,
+객체 -> Json 변환시에도 제외되고,
+Json -> 객체 변환시에도 제외됩니다.
 
 
 
