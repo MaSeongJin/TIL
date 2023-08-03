@@ -24,6 +24,19 @@ querySelectorAll 함수를 이용해 div안의 id 값 'cols'와 button의 class�
 또한 1번 배열의 색을 "red"로 지정함으로 .btn 1번 값인 B가 붉은색으로 변화함.
 위와 같이 작성하면 버튼 추가시에도 똑같은 코드를 재작성 할 필요 없이 자동으로 이벤트가 등록됩니다.
 
+### 여러 엘리먼트에 한번에 이벤트리스너 등록하기
+1. querySelectorAll 을 통해 이벤트를 등록할 모든 엘리먼트를 선택한다
+`let eventList = document.querySelectorAll('.event');`
+2. 선택한 엘리먼트에 forEach를 이용해 이벤트리스너 등록
+``` javascript
+eventList.forEach(function (event) {
+	event.addEventListener('change', function () {
+		//동작할 내용 
+	});
+});
+```
+
+### 그 외 기능들
 - click – 마우스버튼을 클릭하고 버튼에서 손가락을 떼면 발생한다.
 - mouseover – 마우스를 HTML요소 위에 올리면 발생한다.
 - mouseout – 마우스가 HTML요소 밖으로 벗어날 때 발생한다.
