@@ -105,7 +105,7 @@ import com.google.gson.Gson;
 public class JsonToObject {
     public static void main(String[] args) {
         // Json 문자열
-        String jsonStr = "{"id":1,"name":"Anna"}";
+        String jsonStr = "{\"id\":1,\"name\":\"Anna\"}";
  
         // Gson 객체 생성
         Gson gson = new Gson();
@@ -152,7 +152,7 @@ import com.google.gson.Gson;
 public class JsonToMap {
     public static void main(String[] args) {
         // Json 문자열
-        String jsonStr = "{"id":"1","name":"Anna"}";
+        String jsonStr = "{\"id\":\"1\",\"name\":\"Anna\"}";
  
         // Gson 객체 생성
         Gson gson = new Gson();
