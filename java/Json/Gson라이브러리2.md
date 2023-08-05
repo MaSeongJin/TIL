@@ -142,11 +142,69 @@ private String major;
 객체 -> Json 변환시에도 제외되고,
 Json -> 객체 변환시에도 제외됩니다.
 
+**객체 -> Json 변환**
+``` java
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+ 
+public class ExcludeExposeSerialize {
+    public static void main(String[] args) {
+        // Student 객체 생성
+        Student student = new Student(1, "Anna", "CS");
+ 
+        // Gson 객체 생성
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+ 
+        // Student 객체 -> Json 문자열
+        String studentJson = gson.toJson(student);
+ 
+        // Json 문자열 출력
+        System.out.println(studentJson); // {"name":"Anna"}
+ 
+    }
+}
+```
+Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+@Expose 어노테이션을 적용하기 위해서
+excludeFieldsWithoutExposeAnnotation 옵션을 적용하여
+Gson 객체를 생성하였습니다.
 
+System.out.println(studentJson); // {"name":"Anna"}
+객체 -> Json으로 변환하는 경우
+serialize가 true로 선언된 'name' 필드만
+Json 문자열에 포함되었습니다.
+serialize가 false로 선언된 'id' 필드와
+@Expose 어노테이션이 없는 'major' 필드는 제외되었습니다.
 
-
-
-
+**Json -> 객체 변환**
+```java
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+ 
+public class ExcludeExposeDeserialize {
+    public static void main(String[] args) {
+ 
+        // Json 문자열
+        String jsonStr = "{\"id\":1,\"name\":\"Anna\", \"major\":\"CS\"}";
+ 
+        // Gson 객체 생성
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+ 
+        // Json 문자열 -> Student 객체
+        Student student = gson.fromJson(jsonStr, Student.class);
+ 
+        // Student 객체 toString() 출력
+        System.out.println(student); // Student [id=1, major=null, name=null]
+ 
+    }
+}
+```
+System.out.println(student); // Student [id=1, major=null, name=null]
+Json -> 객체로 변환하는 경우
+deserialize가 true로 선언된 'id' 필드만
+객체 필드에 값이 세팅되었습니다.
+deserialize가 false로 선언된 'name' 필드와
+@Expose 어노테이션이 없는 'major' 필드는 값이 세팅되지 않았습니다.
 
 
 
