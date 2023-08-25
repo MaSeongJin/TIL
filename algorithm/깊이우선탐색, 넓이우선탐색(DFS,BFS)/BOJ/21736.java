@@ -38,24 +38,39 @@ public class Main {
 			System.out.println(p);
 		}
 	}
-
 	public static void dfs(int v1, int v2) {
-		if (v1 <= 0 || v2 <= 0 || v1 > N || v2 > M || visit[v1][v2]) {
-			return;
-		}
+
 		visit[v1][v2] = true;
 		if (map[v1][v2] == 'P') {
 			p++;
-		} else if (map[v1][v2] == 'X') {
-			return;
 		}
 		for (int i = 0; i < iDir.length; i++) {
 			int x = v1 + iDir[i];
 			int y = v2 + jDir[i];
 			if (x > 0 && y > 0 && x <= N && y <= M && !visit[x][y]) {
-				dfs(x,y);
+				if(map[x][y] != 'X') {
+					dfs(x,y);
+				}
 			}
 		}
 	}
+	// public static void dfs(int v1, int v2) {
+	// 	if (v1 <= 0 || v2 <= 0 || v1 > N || v2 > M || visit[v1][v2]) {
+	// 		return;
+	// 	}
+	// 	visit[v1][v2] = true;
+	// 	if (map[v1][v2] == 'P') {
+	// 		p++;
+	// 	} else if (map[v1][v2] == 'X') {
+	// 		return;
+	// 	}
+	// 	for (int i = 0; i < iDir.length; i++) {
+	// 		int x = v1 + iDir[i];
+	// 		int y = v2 + jDir[i];
+	// 		if (x > 0 && y > 0 && x <= N && y <= M && !visit[x][y]) {
+	// 			dfs(x,y);
+	// 		}
+	// 	}
+	// }
 
 }
