@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <input type="checkbox" v-model="checked">
+      <label for="check">{{checked}}</label>
+      <hr>
+      <div>CheckedNames : {{checkedNames}}</div>
+      <input type="checkbox" id="alice" value="alice" v-model="checkedNames">
+      <label for="alice">Alice</label>
+      <input type="checkbox" id="bella" value="bella" v-model="checkedNames">
+      <label for="bella">Bella</label>
+      <input type="checkbox" id="cerli" value="cerli" v-model="checkedNames">
+      <label for="cerli">Cerli</label>
+      <hr>
+      <select v-model="selected">
+        <option value="" disabled>선택</option>
+        <option>Alice</option>
+        <option>Blice</option>
+        <option>Clice</option>
+      </select>
+      <div>{{selected}}</div>
+
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const checked = ref(false);
+          const checkedNames = ref([]);
+          const selected = ref("");
+
+          return {
+            checked,
+            checkedNames,
+            selected,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>

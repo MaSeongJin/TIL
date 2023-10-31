@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- 기본 구문 콧수염 방식으로 꺼내오기 -->
+      <p>{{msg}}</p>
+      <p>{{rawHTML}}</p>
+      <p v-html="rawHTML"></p>
+      <div v-bind:id="dynamicId">동적 ID</div>
+      <p>{{number + 1}}</p>
+      <p>{{ ok ? 'yes' : 'no'}}</p>
+      <div :id="`list-${number}`">동적</div>
+      <div v-if="ok">보이나?</div>
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const msg = ref("Hello Vue!");
+          const rawHTML = ref('<span style="color:red">이것은 빨강인가요?</span>');
+          const dynamicId = ref("my-id");
+          const number = ref(10);
+          const ok = ref(false);
+          return {
+            msg,
+            rawHTML,
+            dynamicId,
+            number,
+            ok,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
