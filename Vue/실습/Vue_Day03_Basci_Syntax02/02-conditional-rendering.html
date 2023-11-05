@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <p v-if="isSeen">true일때 보여</p>
+      <p v-else>false일때 보여</p>
+      <button @click="isSeen = !isSeen">토글</button>
+      <hr>
+      <div v-if="name === 'Alice'">Alice입니다</div>
+      <div v-else-if="name === 'Blice'">Blice입니다</div>
+      <div v-else-if="name === 'Clice'">Clice입니다</div>
+      <div v-else-if="name === 'Dlice'">Dlice입니다</div>
+      <div v-else>그 누구도 아니다.</div>
+      <hr>
+      <template v-if="name === 'Alice'">
+        <div>Alice입니다</div>
+        <div>21살</div>
+      </template>
+
+      <hr>
+      <div v-show="isSeen">보이나요</div>
+    </div>
+    <script>
+      const { createApp, ref } = Vue;
+
+      const app = createApp({
+        setup() {
+          const isSeen = ref(true);
+          const name = ref("Alice");
+          return {
+            isSeen, name,
+          };
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
