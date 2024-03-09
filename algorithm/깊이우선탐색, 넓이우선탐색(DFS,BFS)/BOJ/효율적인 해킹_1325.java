@@ -3,77 +3,71 @@ import java.util.*;
 
 public class Main {
 
-    static ArrayList<ArrayList<Integer>> arr;
-    static boolean[] visit;
-    static int[] cnt;
+    static class Computer{
+        int idx;
+        ArrayList<Computer> adj;
+
+        public Computer(int idx) {
+            this.idx = idx;
+            this.adj = new ArrayList<>();
+        }
+    }
+
+    static Computer[] comps;
+    static int n;
+    static int m;
+    static boolean[] visited;
+    static int[] answer;
 
     public static void main(String[] args) throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] inputs = br.readLine().split(" ");
+        n = Integer.parseInt(inputs[0]);
+        m = Integer.parseInt(inputs[1]);
 
-        String[] str = bf.readLine().split(" ");
-
-        int N = Integer.parseInt(str[0]);
-        int M = Integer.parseInt(str[1]);
-        // n명과 m개의 신뢰관계
-
-        arr = new ArrayList<>(); // 신뢰관계
-        visit = new boolean[N + 1]; // 방문 여부
-        cnt = new int[N + 1]; // 자신에게 방문한 횟수
-
-        int max = -1;
-        // 신뢰 관계로 연결된 인원수 = 해킹 가능 인원수
-
-        for (int i = 0; i <= N; i++) {
-            arr.add(new ArrayList<Integer>());
+        comps = new Computer[n + 1];
+        for (int i = 1; i <= n; i++) {
+            comps[i] = new Computer(i);
         }
 
-        for (int i = 0; i < M; i++) {
-            str = bf.readLine().split(" ");
-
-            int s = Integer.parseInt(str[0]);
-            int e = Integer.parseInt(str[1]);
-
-            arr.get(s).add(e);
-        } // 신뢰관계 e->s로 하면 안될 수도?
-
-        for (int i = 1; i <= N; i++) {
-            visit = new boolean[N + 1];
-            // 매 번 방문 초기화
-            dfs(i); // 해당 정점을 시작으로 dfs
+        for (int i = 0; i < m; i++) {
+            inputs = br.readLine().split(" ");
+            int a = Integer.parseInt(inputs[0]);
+            int b = Integer.parseInt(inputs[1]);
+            
+            comps[b].adj.add(comps[a]);
         }
 
-        for (int i = 1; i <= N; i++) {
-            if (max < cnt[i])
-                max = cnt[i];
-        } // 최대값 찾기
+        answer = new int[n + 1];
+        for(int i=1; i<=n; i++){
+            visited = new boolean[n+1];
+            visited[i] = true;
+            dfs(i, i);
+        }
 
-        for (int i = 1; i <= N; i++) {
-            if (max == cnt[i])
-                bw.write(i + " ");
-        } // 최대값인 사람들 출력
+        int max = 0;
+        for(int i=1; i<=n; i++){
+            max = Math.max(max, answer[i]);
+        }
 
-        bw.flush();
-        bw.close();
-
+        StringBuilder sb = new StringBuilder();
+        for(int i=1; i<=n; i++){
+            if(max == answer[i]){
+                sb.append(i+" ");
+            }
+        }
+        System.out.println(sb.toString());
     }
 
-    public static void dfs(int n) {
+    public static void dfs(int start, int now){
 
-        visit[n] = true; // 방문 처리
-
-        for (int next : arr.get(n)) {
-            // 해당 정점(사람)이 신뢰하는 사람 방문
-            // for i 하면 시간초과남. 가급적 for each로
-
-            if (visit[next])
-                continue;
-            // 이미 방문한건 패스
-            cnt[next]++; // 방문 횟수 증가
-            dfs(next); // 다음 정점 방문
-
+        for (Computer c : comps[now].adj) {
+            if (!visited[c.idx]) {
+                visited[c.idx] = true;
+                dfs(start, c.idx);
+                answer[start] ++;
+            }
         }
 
     }
-
 }
