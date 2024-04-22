@@ -101,10 +101,23 @@ public class ItemService {
 }
 ```
 
-## 6. 컨트롤러 생성
+## 6. 응답 객체 생성
+
+```java
+public class ItemResponse {
+    private Long id;
+    private String name;
+    private String category;
+
+    // 생성자, 게터, 세터 생략
+}
+```
+
+## 7. 컨트롤러 생성
 
 ```java
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -117,37 +130,48 @@ public class ItemController {
     private ItemService itemService;
 
     @GetMapping
-    public Flux<Item> getAllItems() {
-        return itemService.findAllItems();
+    public Flux<ItemResponse> getAllItems() {
+        return itemService.findAllItems().map(this::mapToResponse);
     }
 
     @GetMapping("/{id}")
-    public Mono<Item> getItemById(@PathVariable Long id) {
-        return itemService.findItemById(id);
+    public Mono<ItemResponse> getItemById(@PathVariable Long id) {
+        return itemService.findItemById(id).map(this::mapToResponse);
     }
 
     @PostMapping
-    public Mono<Item> createItem(@RequestBody Item item) {
-        return itemService.saveItem(item);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<ItemResponse> createItem(@RequestBody Item item) {
+        return itemService.saveItem(item).map(this::mapToResponse);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<Void> deleteItem(@PathVariable Long id) {
         return itemService.deleteItem(id);
     }
 
     @GetMapping("/category/{category}")
-    public Flux<Item> getItemsByCategory(@PathVariable String category) {
-        return itemService.findItemsByCategory(category);
+    public Flux<ItemResponse> getItemsByCategory(@PathVariable String category) {
+        return itemService.findItemsByCategory(category).map(this::mapToResponse);
     }
 
     @PutMapping("/{id}")
-    public Mono<Item> updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
-        return itemService.updateItem(id, updatedItem);
+    public Mono<ItemResponse> updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
+        return itemService.updateItem(id, updatedItem).map(this::mapToResponse);
     }
 
     @GetMapping("/search")
-    public Flux<Item> searchItems(@RequestParam String keyword) {
-        return itemService.searchItems(keyword);
+    public Flux<ItemResponse> searchItems(@RequestParam String keyword) {
+        return itemService.searchItems(keyword).map(this::mapToResponse);
+    }
+
+    private ItemResponse mapToResponse(Item item) {
+        ItemResponse response = new ItemResponse();
+        response.setId(item.getId());
+        response.setName(item.getName());
+        response.setCategory(item.getCategory());
+        return response;
     }
 }
+```
