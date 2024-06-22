@@ -1,0 +1,52 @@
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.Stack;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int N = Integer.parseInt(br.readLine());
+
+        for (int i = 0; i < N; i++) {
+            String line = br.readLine();
+            Stack<Character> pwdStack = new Stack<>();
+            Stack<Character> deleteStack = new Stack<>();
+            
+            for (int j = 0; j < line.length(); j++) {
+                char pos = line.charAt(j);
+                if (pos == '<') {
+                    if (!pwdStack.isEmpty()) {
+                        deleteStack.push(pwdStack.pop());
+                    }
+                } else if (pos == '>') {
+                    if (!deleteStack.isEmpty()) {
+                        pwdStack.push(deleteStack.pop());
+                    }
+                } else if (pos == '-') {
+                    if (!pwdStack.isEmpty()) {
+                        pwdStack.pop();
+                    }
+                } else {
+                    pwdStack.push(line.charAt(j));
+                }
+            }
+
+            while (!deleteStack.isEmpty()) {
+                pwdStack.push(deleteStack.pop());
+            }
+
+            for (Character character : pwdStack) {
+                bw.write(character);
+            }
+            bw.write("\n");
+        }
+
+        bw.flush();
+        bw.close();
+
+    }
+}
